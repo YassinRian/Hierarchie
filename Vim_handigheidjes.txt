@@ -1,0 +1,6 @@
+vim handigheidjes:
+
+ggVGU => alle tekst naar Uppercase
+ggVGu => alle tekst naar Lowercase
+
+:%s/[zoek woord]/[wijzig woord]/g
