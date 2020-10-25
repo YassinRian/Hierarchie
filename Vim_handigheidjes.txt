@@ -1,4 +1,6 @@
 vim handigheidjes:
+ctrl-v => selecteer rijen
+shift + i => schrijf
 
 ggVGU => alle tekst naar Uppercase
 ggVGu => alle tekst naar Lowercase
