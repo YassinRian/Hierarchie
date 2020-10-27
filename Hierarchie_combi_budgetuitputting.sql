@@ -1,6 +1,6 @@
 WITH 
 CHILD_LEVEL AS -- subquery child_level
-(SELECT DIM_KDR_KPL_ORG_HIER_ID, ORGANISATIE_BK_VADER, ORGANISATIE_KIND,ORGANISATIE_BK_KIND, HR_NIVEAU FROM DMT.DIM_KDR_KPL_ORG_HIER WHERE KOSTENPLAATS_KIND LIKE 'B%'),
+(SELECT DIM_KDR_KPL_ORG_HIER_ID, ORGANISATIE_BK_VADER, ORGANISATIE_KIND,ORGANISATIE_BK_KIND, HR_NIVEAU FROM DMT.DIM_KDR_KPL_ORG_HIER WHERE KOSTENPLAATS_KIND LIKE 'B5%'),
 HIERARCHIE AS -- subquery hierarchie 
 (SELECT
   KPLKDR_ID_TOP
@@ -226,19 +226,8 @@ ORDER BY KPLKDR_ID_TOP, HR_NIVEAU_CHILD, HR_NIVEAU_TOP
 --
 --
 -- Budgetuitputting
-select *
-from
-(
-SELECT 
- -- QY2.FPSB_DIM_BOEKSLEUTEL_ID
- QY2.FPSB_DIM_KDR_KPL_ORG_HIER_ID
-, sum(QY2.FPSB_REALISATIE_LASTEN) Sum_Realisatie --op boeksleutel
---
-FROM
-(  
--- QY2: QUERY LEVEL 2 // NODIG VOOR FILTERING OP HULPCALC
 SELECT
---
+-- QY2
  QY1.FPSB_DIM_GROOTBOEKPERIODE_ID 
 ,QY1.FPSB_DIM_KDR_KPL_ORG_HIER_ID
 ,QY1.FPSB_DIM_BOEKSLEUTEL_ID
@@ -286,13 +275,8 @@ from dmt.fct_balansregels_psb FPSB
 inner join dmt.dim_grootboekperiode GBP on FPSB.dim_grootboekperiode_id = GBP.dim_grootboekperiode_id
 where dim_dienst_id = 65 
 ) QY0
-ORDER BY GBP_MAAND_NUMMER
 ) QY1
+inner join Hierarchie on Hierarchie.kplkdr_id_child = QY1.FPSB_DIM_KDR_KPL_ORG_HIER_ID -- join van de Hierarchie met de dim_kdr_kpl_org_hier_id uit de factBalans
 WHERE QY1.HULPCALC_CORRECTIEPERIODE_IND = 1  
 AND QY1.FPSB_DIM_KDR_KPL_ORG_HIER_ID = 8313
 AND QY1.GBP_MAAND_NUMMER = 9
---
-) QY2
-group by QY2.FPSB_DIM_KDR_KPL_ORG_HIER_ID
-) QY_BUDGETUITPUTTING
-inner join Hierarchie on Hierarchie.kplkdr_id_child = QY_BUDGETUITPUTTING.FPSB_DIM_KDR_KPL_ORG_HIER_ID -- join van de Hierarchie met de dim_kdr_kpl_org_hier_id uit de factBalans
