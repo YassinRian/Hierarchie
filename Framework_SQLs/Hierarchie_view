@@ -1,9 +1,0 @@
-
--- Dit is voldoende om alle niveau's op te halen
-select DISTINCT 
-  lvl0.DIM_KDR_KPL_ORG_HIER_ID as KPLKDR_ID_TOP
-, lvl0.HR_NIVEAU as HR_NIVEAU_TOP
-, lvl0.ORGANISATIE_KIND as Organisatie_top
-from DMT.DIM_KDR_KPL_ORG_HIER lvl0
-WHERE KOSTENPLAATS_KIND like 'B5%' --and HR_niveau = 11
-order by lvl0.DIM_KDR_KPL_ORG_HIER_ID
