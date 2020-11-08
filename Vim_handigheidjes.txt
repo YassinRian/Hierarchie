@@ -6,3 +6,5 @@ ggVGU => alle tekst naar Uppercase
 ggVGu => alle tekst naar Lowercase
 
 :%s/[zoek woord]/[wijzig woord]/g
+n => volgende resultaat
+shift n => vorige resultaat
